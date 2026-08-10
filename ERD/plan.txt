@@ -1,0 +1,12 @@
+Data:
+user + student + instructor + any other pivot tables added for other user roles.
+course + courseTrack + courseStudent + courseInstructor
+exam + examHistory + examStudent + examQuestion + examQuestionHistory
+question
+
+-pivot tables are going to be in the model which uses them
+
+Info:
+branch + citry + country
+track + department
+intake

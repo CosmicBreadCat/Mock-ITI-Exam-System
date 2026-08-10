@@ -1,0 +1,116 @@
+Assume not null unless specified otherwise
+
+Users:
+-id integer PK auto increment
+-name varchar(150)
+-email varchar(150)is email
+-password varchar(150)
+-role enum(student, instructor, training_manager, admin)
+-created at timestamp autogen
+-updated at timestamp autogen
+
+Student:
+-id integer PK auto increment
+-userId integer FK
+-intakeId integer FK
+-branchId integer FK
+-trackId integer FK
+
+Instructor:
+-id integer PK auto increment
+-salary float
+
+Intake:
+-id integer PK auto increment
+-name varchar(150)
+-startDate timestamp
+-endDate timestamp
+
+Branch:
+-id integer PK auto increment
+-name varchar(150)
+-location coordinates
+
+Department:
+-id integer PK auto increment
+-name varchar(150)
+
+Track:
+-id integer PK auto increment
+-name varchar(150)
+-departmentId integer FK
+
+Course:
+-id integer PK auto increment
+-name varchar(150)
+-description text
+-maxDegree integer >minDegree
+-minDegree integer >0
+-trackId integer FK
+-instructorId integer FK
+
+-CourseTrack
+-id integer PK auto increment
+-id courseId integer FK
+-trackId integer FK
+
+-CourseInstructor
+-id integer PK auto increment
+-id courseId integer FK
+-instructorId integer FK
+
+CourseStudent:
+-id integer PK auto increment
+-id courseId integer FK
+-studentId integer FK
+
+Question:
+-id integer PK auto increment
+-body varchar(500)
+-type enum (mcq, true_false, text)
+-correctAnswer varchar(500)
+-choices varchar(500)[] maxLen(3) nullable
+
+Exam:
+-id integer PK auto increment
+-title varchar(150)
+-courseId integer FK
+-intakeId integer FK
+-branchId integer FK
+-startTime dateTime
+-endTime dateTime
+-totalTime dateTime
+-maxDegree integer >minDegree
+-minDegree integer >0
+-lateEntryMin integer 60>n>0 default 0
+-gracePeriodMin integer 60>n>0 default 0
+-maxAttempts integer 5>n>0 default 0
+-retakeCooldownMin integer 60>n>0 default 0
+
+ExamQuestion:
+-id integer PK auto increment
+-examId integer FK
+-questionId integer FK
+-degree float
+
+ExamStudent:
+-id integer PK auto increment
+-examId integer FK
+-studentId integer FK
+
+ExamQuestionHistory:
+-id integer PK auto increment
+-examQuestionId integer FK
+-studentId integer FK
+-answer varchar(500)
+-correct boolean
+-instructorCheck boolean
+
+ExamHistory:
+-id integer PK auto increment
+-examId integer FK
+-studentId integer FK
+-degree float
+
+Notes:
+-on delete
