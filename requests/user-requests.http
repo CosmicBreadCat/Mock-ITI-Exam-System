@@ -1,0 +1,25 @@
+### Create a new user
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "test@test.com",
+    "password": "password"
+}
+
+
+### Log in as a user
+# @name signin
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email":"test@test.com",
+    "password":"password"
+}
+
+
+### Get current user
+GET http://localhost:3000/users/me
+Authorization: Bearer {{signin.response.body.$.access_token}}
