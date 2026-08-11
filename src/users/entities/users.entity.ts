@@ -2,12 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
+
+export enum UserRole {
+  Student = 'Student',
+  Instructor = 'Instructor',
+  Manager = 'TrainingManager',
+  Admin = 'Admin',
+}
 
 @Entity()
 export class User {
@@ -25,9 +31,16 @@ export class User {
   @Column({ length: 255 })
   password!: string;
 
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.Student,
+  })
+  role!: UserRole;
+
   @CreateDateColumn()
-  created_at!: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updated_at!: Date;
+  updatedAt!: Date;
 }

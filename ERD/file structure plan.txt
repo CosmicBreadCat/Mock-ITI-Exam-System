@@ -1,0 +1,36 @@
+Suggested NestJS module structure:
+
+users/
+  entities: User, Student, Instructor (+ future role profile tables)
+
+courses/
+  entities: Course, CourseTrack, CourseInstructor, CourseStudent (pivots owned here)
+  -CourseInstructor and CourseStudent are expected to be superseded once Class exists
+   (a class run is what students enroll in and instructors are assigned to, not
+   the bare Course) -- CourseTrack stays as-is, curriculum membership isn't a
+   per-class concept
+
+classes/
+  entities: Class (a specific run/offering of a course: course + instructor +
+    intake + year, possibly branch/track -- still being worked out) and its own
+    enrollment pivot (working name ClassStudent) once fields are finalized
+  -own module, not folded into courses/, because Exam depends on Class directly
+   as a peer concept rather than an implementation detail owned by courses/
+
+exams/
+  entities: Exam, ExamHistory, ExamStudent, ExamQuestion, ExamQuestionHistory
+
+questions/
+  entities: Question
+
+branches/
+  entities: Branch (+ City, Country if they end up with their own fields)
+
+tracks/
+  entities: Track, Department
+
+intakes/
+  entities: Intake
+
+-pivot tables stay inside the module that owns them, not split out
+-one service per module (not per table/repo); a repo should only be written to by its owning module's service

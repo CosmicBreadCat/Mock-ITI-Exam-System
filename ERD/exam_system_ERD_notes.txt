@@ -23,13 +23,18 @@ Instructor:
 Intake:
 -id integer PK auto increment
 -name varchar(150)
--startDate timestamp
--endDate timestamp
+-startDate date
+-endDate date
 
 Branch:
 -id integer PK auto increment
 -name varchar(150)
--location coordinates
+-cityId integer FK
+
+City:
+-id integer PK auto increment
+-name varchar(150)
+-no Country entity -- single-country system, nothing to normalize
 
 Department:
 -id integer PK auto increment
@@ -46,22 +51,23 @@ Course:
 -description text
 -maxDegree integer >minDegree
 -minDegree integer >0
--trackId integer FK
--instructorId integer FK
 
 -CourseTrack
 -id integer PK auto increment
--id courseId integer FK
+-courseId integer FK
 -trackId integer FK
 
--CourseInstructor
+CourseClass:
 -id integer PK auto increment
--id courseId integer FK
+-courseId integer FK
 -instructorId integer FK
+-intakeId integer FK
+-branchId integer FK
+-trackId integer FK
 
-CourseStudent:
+CourseClassStudent:
 -id integer PK auto increment
--id courseId integer FK
+-courseClassId integer FK
 -studentId integer FK
 
 Question:
@@ -69,17 +75,23 @@ Question:
 -body varchar(500)
 -type enum (mcq, true_false, text)
 -correctAnswer varchar(500)
--choices varchar(500)[] maxLen(3) nullable
+-choices varchar(500)[] maxLen(3) nullable -- holds only the INCORRECT/distractor
+ choices, not the correct answer; correctAnswer is merged in externally at
+ display time, so an mcq question can show up to 4 options total (3 wrong + 1
+ right)
+-constraint: choices required (1-3 entries) when type=mcq, must be null
+ otherwise; correctAnswer must never also appear inside choices
+-no courseId -- question pool is currently global (any instructor can pull any
+ question), not scoped per-course; open decision, may revisit
 
 Exam:
 -id integer PK auto increment
+-courseClassId integer fk
 -title varchar(150)
--courseId integer FK
--intakeId integer FK
--branchId integer FK
+-examType enum (Normal, Corrective)
 -startTime dateTime
 -endTime dateTime
--totalTime dateTime
+-totalTimeMin integer endTime - startTime
 -maxDegree integer >minDegree
 -minDegree integer >0
 -lateEntryMin integer 60>n>0 default 0
@@ -91,7 +103,7 @@ ExamQuestion:
 -id integer PK auto increment
 -examId integer FK
 -questionId integer FK
--degree float
+-degree integer
 
 ExamStudent:
 -id integer PK auto increment
@@ -101,16 +113,34 @@ ExamStudent:
 ExamQuestionHistory:
 -id integer PK auto increment
 -examQuestionId integer FK
--studentId integer FK
+-examHistoryId integer fk
 -answer varchar(500)
 -correct boolean
 -instructorCheck boolean
 
 ExamHistory:
 -id integer PK auto increment
--examId integer FK
--studentId integer FK
--degree float
+-examStudentId integer fk
+-degree integer
+-attempt integer examStudent.exam.maxAttempts>n>0
 
 Notes:
--on delete
+-on delete: Student -> Track/Branch/Intake = RESTRICT (reference data shouldn't
+ cascade-wipe students); CourseTrack -> Course/Track = RESTRICT; Track ->
+ Department = CASCADE (deliberate exception); Branch -> City = RESTRICT
+-on delete, exam side: Exam -> CourseClass = CASCADE (an exam has no meaning
+ without its class); ExamStudent -> Student/Exam = RESTRICT (roster, same
+ treatment as CourseClassStudent); ExamHistory -> ExamStudent = RESTRICT
+ (results are real records, shouldn't vanish because a roster entry did);
+ ExamQuestion -> Exam = CASCADE, ExamQuestion -> Question = RESTRICT (question
+ pool is shared reference data); ExamQuestionHistory -> ExamQuestion =
+ RESTRICT, ExamQuestionHistory -> ExamHistory = CASCADE (per-question answers
+ have no meaning without their parent attempt)
+-Student/Instructor are mutually exclusive per user (one user can't be both) --
+ enforced primarily at the app/service layer (single creation path per role);
+ a DB trigger for defense-in-depth is written and parked in src/temp/, not wired
+ into a migration yet
+-account provisioning is top-down, no self-signup: Admin creates Training
+ Manager + Instructor accounts (and is the only role that can create another
+ Admin); Training Manager creates Student accounts only; Instructor/Student
+ create no one
