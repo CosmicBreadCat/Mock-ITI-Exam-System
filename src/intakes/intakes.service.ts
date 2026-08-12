@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
+import { Intake } from './entities/intake.entity';
 
 @Injectable()
 export class IntakesService {
+  constructor(
+    @InjectRepository(Intake) private intakeRepo: Repository<Intake>,
+  ) {}
+
   create(createIntakeDto: CreateIntakeDto) {
     return 'This action adds a new intake';
   }

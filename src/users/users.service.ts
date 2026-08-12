@@ -1,17 +1,24 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
+import { Student } from './entities/students.entity';
+import { Instructor } from './entities/instructor.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Student) private studentRepo: Repository<Student>,
+    @InjectRepository(Instructor)
+    private instructorRepo: Repository<Instructor>,
+  ) {}
 
   async create(name: string, email: string, password: string) {
-    const user = this.repo.create({ name, email, password });
-    const saveResult = await this.repo.save(user);
+    const user = this.userRepo.create({ name, email, password });
+    const saveResult = await this.userRepo.save(user);
 
     this.logger.log(
       `User with id ${user.id} has been created and saved successfully`,
@@ -21,12 +28,12 @@ export class UsersService {
 
   findByEmail(email: string) {
     if (!email) return null;
-    return this.repo.findOneBy({ email });
+    return this.userRepo.findOneBy({ email });
   }
 
   findOne(id: number) {
     if (!id) return null;
-    return this.repo.findOneBy({ id });
+    return this.userRepo.findOneBy({ id });
   }
 
   async update(id: number, attrs: Partial<User>) {
@@ -37,7 +44,7 @@ export class UsersService {
     }
 
     Object.assign(user, attrs);
-    const saveResult = await this.repo.save(user);
+    const saveResult = await this.userRepo.save(user);
 
     this.logger.log(`User with id ${id} has been updated successfully`);
     return saveResult;
@@ -51,7 +58,7 @@ export class UsersService {
       throw new NotFoundException('user not found');
     }
 
-    const removeResult = await this.repo.remove(user);
+    const removeResult = await this.userRepo.remove(user);
 
     this.logger.log(`User with id ${id} has been removed successfully`);
     return removeResult;
