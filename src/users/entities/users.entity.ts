@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsEmail } from 'class-validator';
+import type { Student } from './students.entity';
+import type { Instructor } from './instructor.entity';
 
 export enum UserRole {
   Student = 'Student',
@@ -43,4 +45,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  // Not persisted columns, populated on read by UsersService.attachProfile based on role.
+  // Manager/Admin have no profile table so they have nothing to attach here, added note for future implementation.
+  student?: Student;
+  instructor?: Instructor;
 }

@@ -14,9 +14,10 @@ export class AuthController {
     return this.authService.signIn(body.email, body.password);
   }
 
-  @Public()
-  @Post('/signup')
-  signUp(@Body() body: SignUpDto) {
-    return this.authService.signUp(body.name, body.email, body.password);
-  }
+  // Depricated, will be moved to users controller as an admin/manager only action
+  // @Public()
+  // @Post('/signup')
+  // signUp(@Body() body: SignUpDto) {
+  //   return this.authService.signUp(body.name, body.email, body.password);
+  // }
 }

@@ -17,18 +17,18 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(name: string, email: string, password: string) {
-    if (await this.usersService.findByEmail(email)) {
-      this.logger.warn(`Email ${email} is already in use`);
-      throw new BadRequestException('Email already in use');
-    }
+  // async signUp(name: string, email: string, password: string) {
+  //   if (await this.usersService.findByEmail(email)) {
+  //     this.logger.warn(`Email ${email} is already in use`);
+  //     throw new BadRequestException('Email already in use');
+  //   }
 
-    const salt = await genSalt(10);
-    const hash = await bHash(password, salt);
+  //   const salt = await genSalt(10);
+  //   const hash = await bHash(password, salt);
 
-    const user = await this.usersService.create(name, email, hash);
-    return user;
-  }
+  //   const user = await this.usersService.create(name, email, hash);
+  //   return user;
+  // }
 
   async signIn(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
@@ -44,7 +44,7 @@ export class AuthService {
       throw new BadRequestException('Bad password');
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     const response = {
       access_token: await this.jwtService.signAsync(payload),
     };

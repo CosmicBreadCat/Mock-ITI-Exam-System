@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './auth/guards/auth.guard';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { getDatabaseConfig } from './config/database.config';
 import { TracksModule } from './tracks/tracks.module';
@@ -21,6 +21,7 @@ import { ExamsModule } from './exams/exams.module';
 import { QuestionsModule } from './questions/questions.module';
 import { BranchesModule } from './branches/branches.module';
 import { IntakesModule } from './intakes/intakes.module';
+import { UserRolesGuard } from './guards/user-roles.guard';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { IntakesModule } from './intakes/intakes.module';
   providers: [
     AppService,
     { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: UserRolesGuard },
     {
       provide: APP_PIPE,
       useFactory: () =>

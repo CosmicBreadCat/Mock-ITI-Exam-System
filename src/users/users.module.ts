@@ -5,11 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Student } from './entities/students.entity';
 import { Instructor } from './entities/instructor.entity';
+import { ResolveUpdateUserInterceptor } from './interceptors/resolve-update-user.interceptor';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Student, Instructor])],
   exports: [UsersService],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, ResolveUpdateUserInterceptor],
 })
 export class UsersModule {}
