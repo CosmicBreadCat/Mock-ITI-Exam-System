@@ -20,6 +20,9 @@ export class ExamQuestionHistory {
   @Column()
   instructorCheck!: boolean;
 
+  @Column({ type: 'int' })
+  awardedDegree!: number;
+
   @Column({ length: 500 })
   answer!: string;
 

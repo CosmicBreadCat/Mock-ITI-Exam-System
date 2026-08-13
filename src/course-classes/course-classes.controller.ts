@@ -14,6 +14,8 @@ import { CreateCourseClassStudentDto } from './dto/create-course-class-student.d
 import { UpdateCourseClassStudentDto } from './dto/update-course-class-student.dto';
 import { RequireRole } from '../decorators/require-role.decorator';
 import { UserRole } from '../users/entities/users.entity';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('course-classes')
 export class CourseClassesController {
@@ -28,13 +30,13 @@ export class CourseClassesController {
   }
 
   @Get()
-  findAll() {
-    return this.courseClassesService.findAll();
+  findAll(@CurrentUser() curUser: JwtPayload) {
+    return this.courseClassesService.findAll(curUser);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseClassesService.findOne(+id);
+  findOne(@Param('id') id: string, @CurrentUser() curUser: JwtPayload) {
+    return this.courseClassesService.findOne(+id, curUser);
   }
 
   @Patch(':id')
@@ -67,16 +69,23 @@ export class CourseClassesController {
   }
 
   @Get(':id/students')
-  findAllCourseClassStudents(@Param('id') id: string) {
-    return this.courseClassesService.findAllCourseClassStudents(+id);
+  @RequireRole(UserRole.Manager, UserRole.Instructor)
+  findAllCourseClassStudents(
+    @Param('id') id: string,
+    @CurrentUser() curUser: JwtPayload,
+  ) {
+    return this.courseClassesService.findAllCourseClassStudents(+id, curUser);
   }
 
   @Get(':id/students/:courseClassStudentId')
+  @RequireRole(UserRole.Manager, UserRole.Instructor)
   findOneCourseClassStudent(
     @Param('courseClassStudentId') courseClassStudentId: string,
+    @CurrentUser() curUser: JwtPayload,
   ) {
     return this.courseClassesService.findOneCourseClassStudent(
       +courseClassStudentId,
+      curUser,
     );
   }
 

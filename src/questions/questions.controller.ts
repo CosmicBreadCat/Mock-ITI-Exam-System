@@ -24,11 +24,13 @@ export class QuestionsController {
   }
 
   @Get()
+  @RequireRole(UserRole.Instructor)
   findAll() {
     return this.questionsService.findAll();
   }
 
   @Get(':id')
+  @RequireRole(UserRole.Instructor)
   findOne(@Param('id') id: string) {
     return this.questionsService.findOne(+id);
   }

@@ -18,6 +18,7 @@ import { TracksModule } from './tracks/tracks.module';
 import { CourseClassesModule } from './course-classes/course-classes.module';
 import { CoursesModule } from './courses/courses.module';
 import { ExamsModule } from './exams/exams.module';
+import { ExamAttemptsModule } from './exam-attempts/exam-attempts.module';
 import { QuestionsModule } from './questions/questions.module';
 import { BranchesModule } from './branches/branches.module';
 import { IntakesModule } from './intakes/intakes.module';
@@ -57,6 +58,7 @@ import { UserRolesGuard } from './guards/user-roles.guard';
     BranchesModule,
     QuestionsModule,
     ExamsModule,
+    ExamAttemptsModule,
     CoursesModule,
     CourseClassesModule,
   ],
