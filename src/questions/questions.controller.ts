@@ -10,12 +10,15 @@ import {
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { RequireRole } from '../decorators/require-role.decorator';
+import { UserRole } from '../users/entities/users.entity';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
+  @RequireRole(UserRole.Admin)
   create(@Body() createQuestionDto: CreateQuestionDto) {
     return this.questionsService.create(createQuestionDto);
   }
@@ -31,6 +34,7 @@ export class QuestionsController {
   }
 
   @Patch(':id')
+  @RequireRole(UserRole.Admin)
   update(
     @Param('id') id: string,
     @Body() updateQuestionDto: UpdateQuestionDto,
@@ -39,6 +43,7 @@ export class QuestionsController {
   }
 
   @Delete(':id')
+  @RequireRole(UserRole.Admin)
   remove(@Param('id') id: string) {
     return this.questionsService.remove(+id);
   }
