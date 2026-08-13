@@ -1,11 +1,13 @@
-### Create a new user
+### DEPRICATED
+### Create a new user 
 POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
     "name": "John Doe",
     "email": "test@test.com",
-    "password": "password"
+    "password": "password",
+    "role": "admin"
 }
 
 

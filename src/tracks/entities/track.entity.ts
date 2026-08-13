@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Department } from './department.entity';
 import { Student } from '../../users/entities/students.entity';
-import { CourseTrack } from '../../courses/entities/course-track.entity';
+import { TrackCourse } from './track-course.entity';
 import { CourseClass } from '../../course-classes/entities/course-class.entity';
 
 @Entity()
@@ -26,8 +26,8 @@ export class Track {
   @OneToMany(() => Student, (student) => student.track)
   students!: Student[];
 
-  @OneToMany(() => CourseTrack, (courseTrack) => courseTrack.track)
-  courseTracks!: CourseTrack[];
+  @OneToMany(() => TrackCourse, (trackCourse) => trackCourse.track)
+  trackCourses!: TrackCourse[];
 
   @OneToMany(() => CourseClass, (courseClass) => courseClass.track)
   courseClasses!: CourseClass[];

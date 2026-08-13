@@ -6,9 +6,10 @@ import { TracksController } from './tracks.controller';
 import { DepartmentsController } from './departments.controller';
 import { Track } from './entities/track.entity';
 import { Department } from './entities/department.entity';
+import { TrackCourse } from './entities/track-course.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Track, Department])],
+  imports: [TypeOrmModule.forFeature([Track, Department, TrackCourse])],
   exports: [TracksService, DepartmentsService],
   controllers: [TracksController, DepartmentsController],
   providers: [TracksService, DepartmentsService],

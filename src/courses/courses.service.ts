@@ -4,14 +4,11 @@ import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
-import { CourseTrack } from './entities/course-track.entity';
 
 @Injectable()
 export class CoursesService {
   constructor(
     @InjectRepository(Course) private courseRepo: Repository<Course>,
-    @InjectRepository(CourseTrack)
-    private courseTrackRepo: Repository<CourseTrack>,
   ) {}
 
   create(createCourseDto: CreateCourseDto) {

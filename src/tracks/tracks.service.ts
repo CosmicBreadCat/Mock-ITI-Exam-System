@@ -5,6 +5,7 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
 import { Department } from './entities/department.entity';
+import { TrackCourse } from './entities/track-course.entity';
 
 @Injectable()
 export class TracksService {
@@ -12,6 +13,8 @@ export class TracksService {
 
   constructor(
     @InjectRepository(Track) private trackRepo: Repository<Track>,
+    @InjectRepository(TrackCourse)
+    private trackCourseRepo: Repository<TrackCourse>,
   ) {}
 
   async create(createTrackDto: CreateTrackDto) {

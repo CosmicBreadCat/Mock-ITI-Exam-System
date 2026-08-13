@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { CourseTrack } from './course-track.entity';
+import { TrackCourse } from '../../tracks/entities/track-course.entity';
 import { CourseClass } from '../../course-classes/entities/course-class.entity';
 
 @Entity()
@@ -27,8 +27,8 @@ export class Course {
   @Column()
   minDegree!: number;
 
-  @OneToMany(() => CourseTrack, (courseTrack) => courseTrack.course)
-  courseTracks!: CourseTrack[];
+  @OneToMany(() => TrackCourse, (trackCourse) => trackCourse.course)
+  trackCourses!: TrackCourse[];
 
   @OneToMany(() => CourseClass, (courseClass) => courseClass.course)
   courseClasses!: CourseClass[];
