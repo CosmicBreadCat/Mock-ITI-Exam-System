@@ -49,9 +49,7 @@ export class BranchesService {
     const { cityId, ...attrs } = updateBranchDto;
 
     Object.assign(branch, attrs);
-    if (cityId !== undefined) {
-      branch.city = { id: cityId } as City;
-    }
+    if (cityId !== undefined) branch.city = { id: cityId } as City;
     const saveResult = await this.branchRepo.save(branch);
 
     this.logger.log(`Branch with id ${id} has been updated successfully`);

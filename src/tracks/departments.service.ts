@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDepartmentDto } from './dto/create/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { UpdateDepartmentDto } from './dto/update/update-department.dto';
 import { Department } from './entities/department.entity';
 
 @Injectable()

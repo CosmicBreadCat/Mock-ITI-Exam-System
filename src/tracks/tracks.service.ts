@@ -2,10 +2,10 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTrackDto } from './dto/create/create-track.dto';
-import { UpdateTrackDto } from './dto/update-track.dto';
-import { UpdateTrackDepartmentDto } from './dto/update-track-department.dto';
+import { UpdateTrackDto } from './dto/update/update-track.dto';
+import { UpdateTrackDepartmentDto } from './dto/update/update-track-department.dto';
 import { CreateTrackCourseDto } from './dto/create/create-track-course.dto';
-import { UpdateTrackCourseDto } from './dto/update-track-course.dto';
+import { UpdateTrackCourseDto } from './dto/update/update-track-course.dto';
 import { Track } from './entities/track.entity';
 import { Department } from './entities/department.entity';
 import { TrackCourse } from './entities/track-course.entity';
@@ -58,9 +58,8 @@ export class TracksService {
     const { departmentId, ...attrs } = updateTrackDto;
 
     Object.assign(track, attrs);
-    if (departmentId !== undefined) {
+    if (departmentId !== undefined)
       track.department = { id: departmentId } as Department;
-    }
     const saveResult = await this.trackRepo.save(track);
 
     this.logger.log(`Track with id ${id} has been updated successfully`);
@@ -138,9 +137,8 @@ export class TracksService {
     const { courseId, ...attrs } = updateTrackCourseDto;
 
     Object.assign(trackCourse, attrs);
-    if (courseId !== undefined) {
+    if (courseId !== undefined)
       trackCourse.course = { id: courseId } as Course;
-    }
     const saveResult = await this.trackCourseRepo.save(trackCourse);
 
     this.logger.log(`TrackCourse with id ${id} has been updated successfully`);

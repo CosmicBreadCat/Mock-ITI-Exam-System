@@ -9,10 +9,10 @@ import {
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create/create-track.dto';
-import { UpdateTrackDto } from './dto/update-track.dto';
-import { UpdateTrackDepartmentDto } from './dto/update-track-department.dto';
+import { UpdateTrackDto } from './dto/update/update-track.dto';
+import { UpdateTrackDepartmentDto } from './dto/update/update-track-department.dto';
 import { CreateTrackCourseDto } from './dto/create/create-track-course.dto';
-import { UpdateTrackCourseDto } from './dto/update-track-course.dto';
+import { UpdateTrackCourseDto } from './dto/update/update-track-course.dto';
 import { RequireRole } from '../decorators/require-role.decorator';
 import { UserRole } from '../users/entities/users.entity';
 
