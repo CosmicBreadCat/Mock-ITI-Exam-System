@@ -1,10 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTrackDto } from './dto/create-track.dto';
+import { CreateTrackDto } from './dto/create/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { UpdateTrackDepartmentDto } from './dto/update-track-department.dto';
-import { CreateTrackCourseDto } from './dto/create-track-course.dto';
+import { CreateTrackCourseDto } from './dto/create/create-track-course.dto';
 import { UpdateTrackCourseDto } from './dto/update-track-course.dto';
 import { Track } from './entities/track.entity';
 import { Department } from './entities/department.entity';
@@ -80,7 +80,9 @@ export class TracksService {
     updateTrackDepartmentDto: UpdateTrackDepartmentDto,
   ) {
     const track = await this.findOne(id);
-    track.department = { id: updateTrackDepartmentDto.departmentId } as Department;
+    track.department = {
+      id: updateTrackDepartmentDto.departmentId,
+    } as Department;
     const saveResult = await this.trackRepo.save(track);
 
     this.logger.log(
@@ -141,9 +143,7 @@ export class TracksService {
     }
     const saveResult = await this.trackCourseRepo.save(trackCourse);
 
-    this.logger.log(
-      `TrackCourse with id ${id} has been updated successfully`,
-    );
+    this.logger.log(`TrackCourse with id ${id} has been updated successfully`);
     return saveResult;
   }
 
@@ -151,9 +151,7 @@ export class TracksService {
     const trackCourse = await this.findOneTrackCourse(id);
     const removeResult = await this.trackCourseRepo.remove(trackCourse);
 
-    this.logger.log(
-      `TrackCourse with id ${id} has been removed successfully`,
-    );
+    this.logger.log(`TrackCourse with id ${id} has been removed successfully`);
     return removeResult;
   }
 }

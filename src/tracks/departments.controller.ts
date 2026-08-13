@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { DepartmentsService } from './departments.service';
-import { CreateDepartmentDto } from './dto/create-department.dto';
+import { CreateDepartmentDto } from './dto/create/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { RequireRole } from '../decorators/require-role.decorator';
 import { UserRole } from '../users/entities/users.entity';

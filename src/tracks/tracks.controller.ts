@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TracksService } from './tracks.service';
-import { CreateTrackDto } from './dto/create-track.dto';
+import { CreateTrackDto } from './dto/create/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { UpdateTrackDepartmentDto } from './dto/update-track-department.dto';
-import { CreateTrackCourseDto } from './dto/create-track-course.dto';
+import { CreateTrackCourseDto } from './dto/create/create-track-course.dto';
 import { UpdateTrackCourseDto } from './dto/update-track-course.dto';
 import { RequireRole } from '../decorators/require-role.decorator';
 import { UserRole } from '../users/entities/users.entity';
