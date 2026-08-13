@@ -53,13 +53,13 @@ export class UsersController {
   @Get('detailed-view/:id')
   @RequireRole(UserRole.Manager)
   findOne(@Param('id') id: string, @CurrentUser() curUser: JwtPayload) {
-    return this.usersService.findOne(Number(id), curUser);
+    return this.usersService.findOne(+id, curUser);
   }
 
   @Delete(':id')
   @RequireRole(UserRole.Admin)
   remove(@Param('id') id: string) {
-    return this.usersService.remove(Number(id));
+    return this.usersService.remove(+id);
   }
 
   @Get('me')
