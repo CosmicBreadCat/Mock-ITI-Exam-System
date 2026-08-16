@@ -12,12 +12,21 @@ export class ExamAttemptsController {
   constructor(private readonly examAttemptsService: ExamAttemptsService) {}
 
   @Get()
-  @RequireRole(UserRole.Student)
-  findForStudent(
+  @RequireRole(UserRole.Student, UserRole.Instructor)
+  findAllAttempts(
     @Param('examId') examId: string,
     @CurrentUser() curUser: JwtPayload,
   ) {
-    return this.examAttemptsService.findForStudent(+examId, curUser);
+    return this.examAttemptsService.findAllAttempts(+examId, curUser);
+  }
+
+  @Get(':attemptId')
+  @RequireRole(UserRole.Student, UserRole.Instructor)
+  findOneAttempt(
+    @Param('attemptId') attemptId: string,
+    @CurrentUser() curUser: JwtPayload,
+  ) {
+    return this.examAttemptsService.findOneAttempt(+attemptId, curUser);
   }
 
   @Post()
@@ -52,5 +61,14 @@ export class ExamAttemptsController {
       correctExamAnswerDto,
       curUser,
     );
+  }
+
+  @Patch(':attemptId/review')
+  @RequireRole(UserRole.Instructor)
+  reviewAttempt(
+    @Param('attemptId') attemptId: string,
+    @CurrentUser() curUser: JwtPayload,
+  ) {
+    return this.examAttemptsService.reviewAttempt(+attemptId, curUser);
   }
 }

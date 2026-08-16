@@ -1,7 +1,7 @@
 import {
   Entity,
   ManyToOne,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -15,8 +15,8 @@ export class ExamStudent {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @OneToMany(() => ExamHistory, (examHistory) => examHistory.examStudent)
-  examHistories!: ExamHistory[];
+  @OneToOne(() => ExamHistory, (examHistory) => examHistory.examStudent)
+  examHistory?: ExamHistory;
 
   @ManyToOne(() => Student, (student) => student.examStudents, {
     onDelete: 'RESTRICT',

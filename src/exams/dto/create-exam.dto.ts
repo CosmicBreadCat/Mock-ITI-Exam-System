@@ -6,8 +6,6 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  Max,
-  Min,
 } from 'class-validator';
 import { ExamType } from '../entities/exam.entity';
 
@@ -38,29 +36,9 @@ export class CreateExamDto {
   @IsPositive()
   passDegree!: number;
 
-  @IsOptional()
   @IsInt()
-  @Min(0)
-  @Max(60)
-  lateEntryMin?: number;
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Max(60)
-  gracePeriodMin?: number;
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Max(5)
-  maxAttempts?: number;
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Max(60)
-  retakeCooldownMin?: number;
+  @IsPositive()
+  sessionDurationMin!: number;
 
   @IsInt()
   @IsPositive()

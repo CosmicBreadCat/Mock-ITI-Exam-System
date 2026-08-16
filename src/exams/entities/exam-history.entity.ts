@@ -1,10 +1,10 @@
 import {
   Column,
   Entity,
-  ManyToOne,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  Unique,
 } from 'typeorm';
 import { ExamStudent } from './exam-student.entity';
 import { ExamQuestionHistory } from './exam-question-history.entity';
@@ -16,7 +16,6 @@ export enum ExamHistoryStatus {
 }
 
 @Entity()
-@Unique(['examStudent', 'attempt'])
 export class ExamHistory {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -34,11 +33,11 @@ export class ExamHistory {
   @Column({ type: 'timestamptz' })
   startTime!: Date;
 
-  @Column({ type: 'timestamptz', nullable: true })
-  endTime?: Date;
+  @Column({ type: 'timestamptz' })
+  endTime!: Date;
 
-  @Column({ type: 'int' })
-  attempt!: number;
+  @Column({ type: 'timestamptz', nullable: true })
+  submittedAt?: Date;
 
   @OneToMany(
     () => ExamQuestionHistory,
@@ -46,8 +45,9 @@ export class ExamHistory {
   )
   examQuestionHistories!: ExamQuestionHistory[];
 
-  @ManyToOne(() => ExamStudent, (examStudent) => examStudent.examHistories, {
+  @OneToOne(() => ExamStudent, (examStudent) => examStudent.examHistory, {
     onDelete: 'RESTRICT',
   })
+  @JoinColumn()
   examStudent!: ExamStudent;
 }

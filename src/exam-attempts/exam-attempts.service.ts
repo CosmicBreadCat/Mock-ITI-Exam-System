@@ -18,8 +18,12 @@ export class ExamAttemptsService {
     private examsService: ExamsService,
   ) {}
 
-  findForStudent(examId: number, curUser: JwtPayload) {
-    return `This action returns exam ${examId}'s attempt info for the current student`;
+  findAllAttempts(examId: number, curUser: JwtPayload) {
+    return `This action returns exam ${examId}'s attempts, scoped to the current student or, for an instructor, all attempts of students in their exam`;
+  }
+
+  findOneAttempt(attemptId: number, curUser: JwtPayload) {
+    return `This action returns attempt ${attemptId}'s full history with all question history records, including correct answers if requested by an instructor`;
   }
 
   start(examId: number, curUser: JwtPayload) {
@@ -31,7 +35,7 @@ export class ExamAttemptsService {
     submitExamAttemptDto: SubmitExamAttemptDto,
     curUser: JwtPayload,
   ) {
-    return `This action submits attempt ${attemptId}`;
+    return `This action submits, corrects and stores attempt ${attemptId}`;
   }
 
   correctAnswer(
@@ -40,5 +44,13 @@ export class ExamAttemptsService {
     curUser: JwtPayload,
   ) {
     return `This action corrects answer ${answerId}`;
+  }
+
+  reviewAttempt(attemptId: number, curUser: JwtPayload) {
+    return `This action marks attempt ${attemptId} as reviewed`;
+  }
+
+  private correctAttempt(attemptId: number) {
+    return `This action corrects attempt ${attemptId}'s question history records against the exam's correct answers`;
   }
 }

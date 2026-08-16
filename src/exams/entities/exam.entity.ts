@@ -20,10 +20,7 @@ export enum ExamType {
 @Check('min_degree > 0')
 @Check('max_degree > min_degree')
 @Check('pass_degree >= min_degree AND pass_degree <= max_degree')
-@Check('late_entry_min >= 0 AND late_entry_min <= 60')
-@Check('grace_period_min >= 0 AND grace_period_min <= 60')
-@Check('max_attempts >= 0 AND max_attempts <= 5')
-@Check('retake_cooldown_min >= 0 AND retake_cooldown_min <= 60')
+@Check('session_duration_min > 0')
 export class Exam {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -45,7 +42,7 @@ export class Exam {
     asExpression: `(EXTRACT(EPOCH FROM ("end_time" - "start_time")) / 60)::int`,
     generatedType: 'STORED',
   })
-  totalTimeMin!: number;
+  windowDurationMin!: number;
 
   @Column({ type: 'int' })
   minDegree!: number;
@@ -56,17 +53,8 @@ export class Exam {
   @Column({ type: 'int' })
   passDegree!: number;
 
-  @Column({ type: 'int', default: 0 })
-  lateEntryMin!: number;
-
-  @Column({ type: 'int', default: 0 })
-  gracePeriodMin!: number;
-
-  @Column({ type: 'int', default: 0 })
-  maxAttempts!: number;
-
-  @Column({ type: 'int', default: 0 })
-  retakeCooldownMin!: number;
+  @Column({ type: 'int' })
+  sessionDurationMin!: number;
 
   @OneToMany(() => ExamQuestion, (examQuestion) => examQuestion.exam)
   examQuestions!: ExamQuestion[];
