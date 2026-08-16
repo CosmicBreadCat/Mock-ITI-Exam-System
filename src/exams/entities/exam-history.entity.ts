@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Exam } from './exam.entity';
 import { ExamStudent } from './exam-student.entity';
 import { ExamQuestionHistory } from './exam-question-history.entity';
 
@@ -50,4 +52,7 @@ export class ExamHistory {
   })
   @JoinColumn()
   examStudent!: ExamStudent;
+
+  @ManyToOne(() => Exam, { onDelete: 'RESTRICT' })
+  exam!: Exam;
 }

@@ -20,13 +20,27 @@ export class ExamAttemptsController {
     return this.examAttemptsService.findAllAttempts(+examId, curUser);
   }
 
+  @Get('questions')
+  @RequireRole(UserRole.Student)
+  getExamQuestions(
+    @Param('examId') examId: string,
+    @CurrentUser() curUser: JwtPayload,
+  ) {
+    return this.examAttemptsService.getExamQuestions(+examId, curUser);
+  }
+
   @Get(':attemptId')
   @RequireRole(UserRole.Student, UserRole.Instructor)
   findOneAttempt(
+    @Param('examId') examId: string,
     @Param('attemptId') attemptId: string,
     @CurrentUser() curUser: JwtPayload,
   ) {
-    return this.examAttemptsService.findOneAttempt(+attemptId, curUser);
+    return this.examAttemptsService.findOneAttempt(
+      +examId,
+      +attemptId,
+      curUser,
+    );
   }
 
   @Post()
@@ -38,11 +52,13 @@ export class ExamAttemptsController {
   @Post(':attemptId/submit')
   @RequireRole(UserRole.Student)
   submit(
+    @Param('examId') examId: string,
     @Param('attemptId') attemptId: string,
     @Body() submitExamAttemptDto: SubmitExamAttemptDto,
     @CurrentUser() curUser: JwtPayload,
   ) {
     return this.examAttemptsService.submit(
+      +examId,
       +attemptId,
       submitExamAttemptDto,
       curUser,
@@ -52,11 +68,13 @@ export class ExamAttemptsController {
   @Patch(':attemptId/answers/:answerId')
   @RequireRole(UserRole.Instructor)
   correctAnswer(
+    @Param('examId') examId: string,
     @Param('answerId') answerId: string,
     @Body() correctExamAnswerDto: CorrectExamAnswerDto,
     @CurrentUser() curUser: JwtPayload,
   ) {
     return this.examAttemptsService.correctAnswer(
+      +examId,
       +answerId,
       correctExamAnswerDto,
       curUser,
@@ -66,9 +84,10 @@ export class ExamAttemptsController {
   @Patch(':attemptId/review')
   @RequireRole(UserRole.Instructor)
   reviewAttempt(
+    @Param('examId') examId: string,
     @Param('attemptId') attemptId: string,
     @CurrentUser() curUser: JwtPayload,
   ) {
-    return this.examAttemptsService.reviewAttempt(+attemptId, curUser);
+    return this.examAttemptsService.reviewAttempt(+examId, +attemptId, curUser);
   }
 }
